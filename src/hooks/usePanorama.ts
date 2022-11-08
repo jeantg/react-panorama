@@ -1,11 +1,7 @@
 import { RefObject, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 
-export const usePanorama = (
-  ref: RefObject<HTMLDivElement>,
-  src: string,
-  refContainer?: RefObject<HTMLDivElement>
-) => {
+export const usePanorama = (ref: RefObject<HTMLDivElement>, src: string) => {
   const [loadingManager, setLoadingManager] = useState({
     loaded: false,
   });
@@ -65,10 +61,10 @@ export const usePanorama = (
     );
   };
   useEffect(() => {
-    window.addEventListener("resize", () => onWindowResize(refContainer));
+    window.addEventListener("resize", () => onWindowResize(ref));
     return () =>
-      window.removeEventListener("resize", () => onWindowResize(refContainer));
-  }, [refContainer]);
+      window.removeEventListener("resize", () => onWindowResize(ref));
+  }, [ref]);
   const init = () => {
     const container: HTMLDivElement = ref?.current as HTMLDivElement;
     const geometry = new THREE.SphereGeometry(500, 60, 40);
@@ -84,8 +80,8 @@ export const usePanorama = (
     scene.add(mesh);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(
-      Number(refContainer?.current?.getBoundingClientRect()?.width),
-      Number(refContainer?.current?.getBoundingClientRect()?.height)
+      Number(ref?.current?.getBoundingClientRect()?.width),
+      Number(ref?.current?.getBoundingClientRect()?.height)
     );
 
     container?.appendChild(renderer.domElement);

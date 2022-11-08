@@ -25,13 +25,10 @@ const RowItem = ({ icon, title, description }: RowItemProps) => {
 };
 export const App = () => {
   const [fullScreen, setFullScreen] = useState(false);
-
-  const ref = createRef<HTMLDivElement>();
   const refContainer = createRef<HTMLDivElement>();
   const { init, animate, loadingManager } = usePanorama(
-    ref,
-    "panorama.jpeg",
-    refContainer
+    refContainer,
+    "panorama.jpeg"
   );
   useEffect(() => {
     init();
@@ -41,29 +38,29 @@ export const App = () => {
 
   return (
     <main className="w-full h-full  flex flex-col justify-center px-20 bg-slate-200">
+      {fullScreen && <FullScreen onClose={handleFullScreen} />}
       <p className="text-black text-xs">view of 360°</p>
       <div className="bg-white rounded-2xl shadow-md">
-        {fullScreen && <FullScreen onClose={handleFullScreen} />}
-        <div className="flex  rounded-2xl">
+        <div className="relative flex h-full">
+          {loadingManager.loaded && (
+            <div className="absolute  bg-black/50 h-8 bottom-0  rounded-bl-2xl flex items-center min-w-[50%] z-20">
+              <BsFullscreen
+                className=" text-white ml-auto  mr-2 cursor-pointer"
+                strokeWidth={2}
+                size={18}
+                onClick={handleFullScreen}
+              />
+            </div>
+          )}
           <div
-            className="min-w-[50%] h-auto  main-secondary"
+            className="min-w-[50%] h-full  main-secondary flex items-center justify-center"
             ref={refContainer}
           >
-            <div className="relative flex items-center justify-center">
-              <div ref={ref} />
-              <div className="absolute">
-                {!loadingManager.loaded && <Progress />}
+            {!loadingManager.loaded && (
+              <div className="absolute z-30">
+                <Progress />
               </div>
-
-              <div className="absolute w-full bg-black/50 h-8 bottom-0  rounded-bl-2xl flex items-center">
-                <BsFullscreen
-                  className=" text-white ml-auto  mr-2 cursor-pointer"
-                  strokeWidth={2}
-                  size={18}
-                  onClick={handleFullScreen}
-                />
-              </div>
-            </div>
+            )}
           </div>
 
           <div className="px-8 flex flex-col w-full select-none">
