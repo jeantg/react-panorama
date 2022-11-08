@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+.main canvas {
+  @apply rounded-2xl cursor-move z-10;
+}
+.main-secondary canvas {
+  @apply rounded-bl-2xl rounded-tl-2xl cursor-move z-10;
+}
+body,
+html,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+}
